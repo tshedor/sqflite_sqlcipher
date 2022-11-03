@@ -151,7 +151,7 @@ public class SqflitePlugin implements FlutterPlugin, MethodCallHandler {
         onAttachedToEngine(binding.getApplicationContext(), binding.getBinaryMessenger());
     }
 
-    private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
+    protected void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
         this.context = applicationContext;
         methodChannel = new MethodChannel(messenger, Constant.PLUGIN_KEY,
                 StandardMethodCodec.INSTANCE,
