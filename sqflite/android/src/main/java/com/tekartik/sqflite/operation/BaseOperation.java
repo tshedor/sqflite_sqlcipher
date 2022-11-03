@@ -1,4 +1,4 @@
-package com.davidmartos96.sqflite_sqlcipher.operation;
+package com.tekartik.sqflite.operation;
 
 /**
  * Created by alex on 09/01/18.

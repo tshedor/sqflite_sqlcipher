@@ -1,8 +1,8 @@
-package com.davidmartos96.sqflite_sqlcipher.dev;
-
-import android.util.Log;
+package com.tekartik.sqflite.dev;
 
 import static android.content.ContentValues.TAG;
+
+import android.util.Log;
 
 /**
  * Created by alex on 09/01/18.

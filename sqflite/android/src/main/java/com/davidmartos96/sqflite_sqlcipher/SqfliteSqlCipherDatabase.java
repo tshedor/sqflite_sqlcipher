@@ -5,35 +5,27 @@ import android.util.Log;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteDatabaseHook;
 import net.sqlcipher.DatabaseErrorHandler;
+import com.tekartik.sqflite.Database;
+
 import java.io.File;
 
-import static com.davidmartos96.sqflite_sqlcipher.Constant.TAG;
+import static com.tekartik.sqflite.Constant.TAG;
 
-class Database {
-    final boolean singleInstance;
-    final String path;
+class SqfliteSqlCipherDatabase extends Database {
     final String password;
-    final int id;
-    final int logLevel;
-    SQLiteDatabase sqliteDatabase;
-    boolean inTransaction;
 
-
-    Database(String path, String password, int id, boolean singleInstance, int logLevel) {
-        this.path = path;
+    SqfliteSqlCipherDatabase(Context context, String path, String password, int id, boolean singleInstance, int logLevel) {
+        super(context, path, id, singleInstance, logLevel);
         this.password = (password != null) ? password : "";
-
-        this.singleInstance = singleInstance;
-        this.id = id;
-        this.logLevel = logLevel;
     }
 
+    @Override
     public void open() {
         openWithFlags(SQLiteDatabase.CREATE_IF_NECESSARY);
-
     }
 
     // Change default error handler to avoid erasing the existing file.
+    @Override
     public void openReadOnly() {
         openWithFlags(SQLiteDatabase.OPEN_READONLY, new DatabaseErrorHandler() {
             @Override
@@ -72,18 +64,7 @@ class Database {
         }
     }
 
-    public void close() {
-        sqliteDatabase.close();
-    }
-
-    public SQLiteDatabase getWritableDatabase() {
-        return sqliteDatabase;
-    }
-
-    public SQLiteDatabase getReadableDatabase() {
-        return sqliteDatabase;
-    }
-
+    @Override
     public boolean enableWriteAheadLogging() {
         try {
             sqliteDatabase.rawExecSQL("PRAGMA journal_mode=WAL;");
@@ -94,17 +75,7 @@ class Database {
         return true;
     }
 
-    String getThreadLogTag() {
-        Thread thread = Thread.currentThread();
-
-        return "" + id + "," + thread.getName() + "(" + thread.getId() + ")";
-    }
-
-    String getThreadLogPrefix() {
-        return "[" + getThreadLogTag() + "] ";
-    }
-
-
+    @Override
     static void deleteDatabase(String path) {
         File file = new File(path);
 

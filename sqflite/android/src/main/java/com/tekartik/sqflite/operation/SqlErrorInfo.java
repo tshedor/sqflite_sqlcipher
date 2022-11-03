@@ -1,12 +1,12 @@
-package com.davidmartos96.sqflite_sqlcipher.operation;
+package com.tekartik.sqflite.operation;
 
-import com.davidmartos96.sqflite_sqlcipher.SqlCommand;
+import static com.tekartik.sqflite.Constant.PARAM_SQL;
+import static com.tekartik.sqflite.Constant.PARAM_SQL_ARGUMENTS;
+
+import com.tekartik.sqflite.SqlCommand;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.davidmartos96.sqflite_sqlcipher.Constant.PARAM_SQL;
-import static com.davidmartos96.sqflite_sqlcipher.Constant.PARAM_SQL_ARGUMENTS;
 
 public class SqlErrorInfo {
 

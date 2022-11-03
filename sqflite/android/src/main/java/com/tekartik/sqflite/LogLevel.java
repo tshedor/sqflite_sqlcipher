@@ -1,8 +1,8 @@
-package com.davidmartos96.sqflite_sqlcipher;
+package com.tekartik.sqflite;
+
+import static com.tekartik.sqflite.Constant.PARAM_LOG_LEVEL;
 
 import io.flutter.plugin.common.MethodCall;
-
-import static com.davidmartos96.sqflite_sqlcipher.Constant.PARAM_LOG_LEVEL;
 
 public class LogLevel {
 
