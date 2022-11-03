@@ -10,6 +10,7 @@ import static com.davidmartos96.sqflite_sqlcipher.Constant.PARAM_IN_TRANSACTION;
 import static com.davidmartos96.sqflite_sqlcipher.Constant.PARAM_NO_RESULT;
 import static com.davidmartos96.sqflite_sqlcipher.Constant.PARAM_SQL;
 import static com.davidmartos96.sqflite_sqlcipher.Constant.PARAM_SQL_ARGUMENTS;
+import static com.davidmartos96.sqflite_sqlcipher.Constant.PARAM_TRANSACTION_ID;
 
 /**
  * Created by alex on 09/01/18.
@@ -24,12 +25,21 @@ public abstract class BaseReadOperation implements Operation {
         return getArgument(PARAM_SQL_ARGUMENTS);
     }
 
+    @Nullable
+    public Integer getTransactionId() {
+        return getArgument(PARAM_TRANSACTION_ID);
+    }
+
+    public boolean hasNullTransactionId() {
+        return hasArgument(PARAM_TRANSACTION_ID) && getTransactionId() == null;
+    }
+
     public SqlCommand getSqlCommand() {
         return new SqlCommand(getSql(), getSqlArguments());
     }
 
-    public Boolean getInTransaction() {
-        return getBoolean(PARAM_IN_TRANSACTION);
+    public Boolean getInTransactionChange() {
+        return getBoolean(PARAM_IN_TRANSACTION_CHANGE);
     }
 
     @Override
@@ -53,4 +63,9 @@ public abstract class BaseReadOperation implements Operation {
     // We actually have an inner object that does the implementation
     protected abstract OperationResult getOperationResult();
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "" + getMethod() + " " + getSql() + " " + getSqlArguments();
+    }
 }
