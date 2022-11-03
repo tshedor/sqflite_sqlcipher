@@ -14,9 +14,6 @@ import java.io.File;
 import static com.tekartik.sqflite.Constant.TAG;
 
 class SqfliteSqlCipherDatabase extends Database {
-    @Nullable
-    protected SQLiteDatabase sqliteDatabase;
-
     final String password;
 
     SqfliteSqlCipherDatabase(Context context, String path, String password, int id, boolean singleInstance, int logLevel) {
@@ -50,7 +47,7 @@ class SqfliteSqlCipherDatabase extends Database {
 
     private void openWithFlags(int flags, DatabaseErrorHandler errorHandler) {
         try {
-            sqliteDatabase = SQLiteDatabase.openDatabase(path, password, null, flags, null, errorHandler);
+            this.sqliteDatabase = SQLiteDatabase.openDatabase(path, password, null, flags, null, errorHandler);
 
         }catch (Exception e) {
             Log.d(TAG, "Opening db in " + path + " with PRAGMA cipher_migrate");
@@ -65,19 +62,8 @@ class SqfliteSqlCipherDatabase extends Database {
                 }
             };
 
-            sqliteDatabase = SQLiteDatabase.openDatabase(path, password, null, flags, hook, errorHandler);
+            this.sqliteDatabase = SQLiteDatabase.openDatabase(path, password, null, flags, hook, errorHandler);
         }
-    }
-
-    @Override
-    public boolean enableWriteAheadLogging() {
-        try {
-            sqliteDatabase.rawExecSQL("PRAGMA journal_mode=WAL;");
-        } catch (Exception e) {
-            Log.e(TAG, getThreadLogPrefix() + "enable WAL error: " + e);
-            return false;
-        }
-        return true;
     }
 
     static void deleteDatabase(String path) {

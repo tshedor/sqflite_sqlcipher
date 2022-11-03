@@ -20,12 +20,13 @@ import static com.tekartik.sqflite.Utils.cursorRowToList;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
-import android.database.SQLException;
+import net.sqlcipher.Cursor;
+import net.sqlcipher.DatabaseErrorHandler;
+import net.sqlcipher.SQLException;
 import android.database.sqlite.SQLiteCantOpenDatabaseException;
-import android.database.sqlite.SQLiteCursor;
-import android.database.sqlite.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteCursor;
+import net.sqlcipher.database.SQLiteDatabase;
 import android.os.Handler;
 import android.util.Log;
 
@@ -56,7 +57,7 @@ public class Database {
     // 2022-09-14 experiments show several corruption issue.
     final static boolean WAL_ENABLED_BY_DEFAULT = false;
     private static final String WAL_ENABLED_META_NAME = "com.tekartik.sqflite.wal_enabled";
-    static private Boolean walGloballyEnabled;
+    static public Boolean walGloballyEnabled;
     final boolean singleInstance;
     @NonNull
     protected final String path;
@@ -105,42 +106,16 @@ public class Database {
     }
 
     static void deleteDatabase(String path) {
-        SQLiteDatabase.deleteDatabase(new File(path));
+
     }
 
     public void open() {
-        int flags = SQLiteDatabase.CREATE_IF_NECESSARY;
 
-        // Check meta data only once
-        if (walGloballyEnabled == null) {
-            walGloballyEnabled = checkWalEnabled(context);
-            if (walGloballyEnabled) {
-                if (LogLevel.hasVerboseLevel(logLevel)) {
-                    Log.d(TAG, getThreadLogPrefix() + "[sqflite] WAL enabled");
-                }
-            }
-        }
-        if (walGloballyEnabled) {
-            // Turned on since 2.1.0-dev.1
-            flags |= SQLiteDatabase.ENABLE_WRITE_AHEAD_LOGGING;
-        }
-
-        sqliteDatabase = SQLiteDatabase.openDatabase(path, null, flags);
     }
 
     // Change default error handler to avoid erasing the existing file.
     public void openReadOnly() {
-        sqliteDatabase = SQLiteDatabase.openDatabase(path, null,
-                SQLiteDatabase.OPEN_READONLY, new DatabaseErrorHandler() {
-                    @Override
-                    public void onCorruption(SQLiteDatabase dbObj) {
-                        // ignored
-                        // default implementation delete the file
-                        //
-                        // This happens asynchronously so cannot be tracked. However a simple
-                        // access should fail
-                    }
-                });
+
     }
 
     public void close() {
@@ -262,7 +237,7 @@ public class Database {
             cursor = getReadableDatabase().rawQueryWithFactory(
                     (sqLiteDatabase, sqLiteCursorDriver, editTable, sqLiteQuery) -> {
                         command.bindTo(sqLiteQuery);
-                        return new SQLiteCursor(sqLiteCursorDriver, editTable, sqLiteQuery);
+                        return new SQLiteCursor(sqliteDatabase, sqLiteCursorDriver, editTable, sqLiteQuery);
                     }, command.getSql(), EMPTY_STRING_ARRAY, null);
 
             Map<String, Object> results = cursorToResults(cursor, cursorPageSize);

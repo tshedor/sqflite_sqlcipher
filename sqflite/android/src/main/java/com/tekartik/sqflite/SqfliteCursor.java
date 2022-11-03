@@ -1,6 +1,6 @@
 package com.tekartik.sqflite;
 
-import android.database.Cursor;
+import net.sqlcipher.Cursor;
 
 /**
  * Sqflite cursor
