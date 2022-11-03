@@ -51,7 +51,7 @@ import java.util.Map;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
-class Database {
+public class Database {
     // To turn on when supported fully
     // 2022-09-14 experiments show several corruption issue.
     final static boolean WAL_ENABLED_BY_DEFAULT = false;
@@ -59,9 +59,9 @@ class Database {
     static private Boolean walGloballyEnabled;
     final boolean singleInstance;
     @NonNull
-    final String path;
+    protected final String path;
     final int id;
-    final int logLevel;
+    public final int logLevel;
     @NonNull
     final Context context;
     /// Delayed operations not in the current transaction.
@@ -70,8 +70,8 @@ class Database {
     // Set by plugin
     public Handler handler;
     @Nullable
-    SQLiteDatabase sqliteDatabase;
-    boolean inTransaction;
+    public SQLiteDatabase sqliteDatabase;
+    public boolean inTransaction;
     // Transaction
     private int lastTransactionId = 0; // incremental transaction id
     @Nullable
@@ -79,7 +79,7 @@ class Database {
     // Cursors
     private int lastCursorId = 0; // incremental cursor id
 
-    Database(Context context, String path, int id, boolean singleInstance, int logLevel) {
+    public Database(Context context, String path, int id, boolean singleInstance, int logLevel) {
         this.context = context;
         this.path = path;
         this.singleInstance = singleInstance;
@@ -175,7 +175,7 @@ class Database {
         return "" + id + "," + thread.getName() + "(" + thread.getId() + ")";
     }
 
-    String getThreadLogPrefix() {
+    public String getThreadLogPrefix() {
         return "[" + getThreadLogTag() + "] ";
     }
 
@@ -374,7 +374,7 @@ class Database {
         }
     }
 
-    void handleException(Exception exception, Operation operation) {
+    public void handleException(Exception exception, Operation operation) {
         if (exception instanceof SQLiteCantOpenDatabaseException) {
             operation.error(Constant.SQLITE_ERROR, Constant.ERROR_OPEN_FAILED + " " + path, null);
             return;

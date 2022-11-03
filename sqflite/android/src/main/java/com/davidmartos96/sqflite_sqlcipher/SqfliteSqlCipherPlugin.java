@@ -19,9 +19,11 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import com.tekartik.sqflite.operation.MethodCallOperation;
 
 import com.tekartik.sqflite.SqflitePlugin;
 import com.tekartik.sqflite.Database;
+import com.tekartik.sqflite.LogLevel;
 
 import static com.tekartik.sqflite.Constant.PARAM_READ_ONLY;
 import static com.tekartik.sqflite.Constant.PARAM_PATH;
@@ -65,9 +67,9 @@ public class SqfliteSqlCipherPlugin extends SqflitePlugin {
             // Look for in memory instance
             synchronized (databaseMapLocker) {
                 if (LogLevel.hasVerboseLevel(logLevel)) {
-                    Log.d(TAG, "Look for " + path + " in " + _singleInstancesByPath.keySet());
+                    Log.d(TAG, "Look for " + path + " in " + SqflitePlugin._singleInstancesByPath.keySet());
                 }
-                Integer databaseId = _singleInstancesByPath.get(path);
+                Integer databaseId = SqflitePlugin._singleInstancesByPath.get(path);
                 if (databaseId != null) {
                     Database database = databaseMap.get(databaseId);
                     if (database != null) {
@@ -79,7 +81,7 @@ public class SqfliteSqlCipherPlugin extends SqflitePlugin {
                             if (LogLevel.hasVerboseLevel(logLevel)) {
                                 Log.d(TAG, database.getThreadLogPrefix() + "re-opened single instance " + (database.inTransaction ? "(in transaction) " : "") + databaseId + " " + path);
                             }
-                            result.success(makeOpenResult(databaseId, true, database.inTransaction));
+                            result.success(SqflitePlugin.makeOpenResult(databaseId, true, database.inTransaction));
                             return;
                         }
                     }
@@ -146,16 +148,16 @@ public class SqfliteSqlCipherPlugin extends SqflitePlugin {
 
                             synchronized (databaseMapLocker) {
                                 if (singleInstance) {
-                                    _singleInstancesByPath.put(path, databaseId);
+                                    SqflitePlugin._singleInstancesByPath.put(path, databaseId);
                                 }
-                                databaseMap.put(databaseId, database);
+                                SqflitePlugin.databaseMap.put(databaseId, database);
                             }
                             if (LogLevel.hasSqlLevel(database.logLevel)) {
                                 Log.d(TAG, database.getThreadLogPrefix() + "opened " + databaseId + " " + path);
                             }
                         }
 
-                        result.success(makeOpenResult(databaseId, false, false));
+                        result.success(SqflitePlugin.makeOpenResult(databaseId, false, false));
                     });
         }
 

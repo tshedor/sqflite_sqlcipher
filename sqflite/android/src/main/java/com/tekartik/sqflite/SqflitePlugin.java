@@ -55,21 +55,21 @@ import io.flutter.plugin.common.StandardMethodCodec;
  */
 public class SqflitePlugin implements FlutterPlugin, MethodCallHandler {
 
-    static final Map<String, Integer> _singleInstancesByPath = new HashMap<>();
+    static public final Map<String, Integer> _singleInstancesByPath = new HashMap<>();
     @SuppressLint("UseSparseArrays")
-    static final Map<Integer, Database> databaseMap = new HashMap<>();
-    static private final Object databaseMapLocker = new Object();
-    static private final Object openCloseLocker = new Object();
-    static int logLevel = LogLevel.none;
+    static public final Map<Integer, Database> databaseMap = new HashMap<>();
+    static protected final Object databaseMapLocker = new Object();
+    static protected final Object openCloseLocker = new Object();
+    static protected int logLevel = LogLevel.none;
     // local cache
     static String databasesPath;
-    static private int THREAD_PRIORITY = Process.THREAD_PRIORITY_DEFAULT;
-    static private int databaseId = 0; // incremental database id
+    static protected int THREAD_PRIORITY = Process.THREAD_PRIORITY_DEFAULT;
+    static protected int databaseId = 0; // incremental database id
     // Database thread execution
-    static private HandlerThread handlerThread;
-    static private Handler handler;
-    private Context context;
-    private MethodChannel methodChannel;
+    static protected HandlerThread handlerThread;
+    static protected Handler handler;
+    protected Context context;
+    protected MethodChannel methodChannel;
 
     // Needed public constructor
     public SqflitePlugin() {
@@ -126,7 +126,7 @@ public class SqflitePlugin implements FlutterPlugin, MethodCallHandler {
         }
     }
 
-    static boolean isInMemoryPath(String path) {
+    protected static boolean isInMemoryPath(String path) {
         return (path == null || path.equals(MEMORY_DATABASE_PATH));
     }
 
@@ -134,7 +134,7 @@ public class SqflitePlugin implements FlutterPlugin, MethodCallHandler {
     // 'id': xxx
     // 'recovered': true // if recovered only for single instance
     // }
-    static Map makeOpenResult(int databaseId, boolean recovered, boolean recoveredInTransaction) {
+    public static Map makeOpenResult(int databaseId, boolean recovered, boolean recoveredInTransaction) {
         Map<String, Object> result = new HashMap<>();
         result.put(PARAM_ID, databaseId);
         if (recovered) {

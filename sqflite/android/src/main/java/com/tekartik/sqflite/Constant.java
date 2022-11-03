@@ -58,10 +58,10 @@ public class Constant {
     static final public String METHOD_DEBUG_MODE = "debugMode";
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
     static final String PARAM_ID = "id";
-    static final String PARAM_PATH = "path";
+    public static final String PARAM_PATH = "path";
     // when opening a database
-    static final String PARAM_READ_ONLY = "readOnly"; // boolean
-    static final String PARAM_SINGLE_INSTANCE = "singleInstance"; // boolean
+    public static final String PARAM_READ_ONLY = "readOnly"; // boolean
+    public static final String PARAM_SINGLE_INSTANCE = "singleInstance"; // boolean
     static final String PARAM_LOG_LEVEL = "logLevel"; // int
     static final String PARAM_THREAD_PRIORITY = "androidThreadPriority"; // int
     // debugMode
@@ -69,9 +69,9 @@ public class Constant {
     static final String CMD_GET = "get";
     // in batch
     static final String PARAM_OPERATIONS = "operations";
-    static final String SQLITE_ERROR = "sqlite_error"; // code
+    public static final String SQLITE_ERROR = "sqlite_error"; // code
     static final String ERROR_BAD_PARAM = "bad_param"; // internal only
-    static final String ERROR_OPEN_FAILED = "open_failed"; // msg
+    public static final String ERROR_OPEN_FAILED = "open_failed"; // msg
     static final String ERROR_DATABASE_CLOSED = "database_closed"; // msg
     // memory database path
     static final String MEMORY_DATABASE_PATH = ":memory:";

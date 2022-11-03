@@ -1,6 +1,8 @@
 package com.davidmartos96.sqflite_sqlcipher;
 
+import android.content.Context;
 import android.util.Log;
+import androidx.annotation.Nullable;
 
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteDatabaseHook;
@@ -12,6 +14,9 @@ import java.io.File;
 import static com.tekartik.sqflite.Constant.TAG;
 
 class SqfliteSqlCipherDatabase extends Database {
+    @Nullable
+    protected SQLiteDatabase sqliteDatabase;
+
     final String password;
 
     SqfliteSqlCipherDatabase(Context context, String path, String password, int id, boolean singleInstance, int logLevel) {
@@ -75,7 +80,6 @@ class SqfliteSqlCipherDatabase extends Database {
         return true;
     }
 
-    @Override
     static void deleteDatabase(String path) {
         File file = new File(path);
 

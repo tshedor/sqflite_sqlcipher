@@ -14,11 +14,11 @@ public class LogLevel {
         return methodCall.argument(PARAM_LOG_LEVEL);
     }
 
-    static boolean hasSqlLevel(int level) {
+    public static boolean hasSqlLevel(int level) {
         return level >= sql;
     }
 
-    static boolean hasVerboseLevel(int level) {
+    public static boolean hasVerboseLevel(int level) {
         return level >= verbose;
     }
 }
